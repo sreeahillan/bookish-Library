@@ -6,7 +6,6 @@ const progress = window.serverData.map((obj) => obj.progress);
 
 input.value = id[0] || 0;
 
-document.body.style.backdropFilter = "blur(7px)";
 
 
 svg.forEach((obj) => {

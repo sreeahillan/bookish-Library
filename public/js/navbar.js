@@ -1,5 +1,10 @@
 const links = document.querySelectorAll('.navbar a');
 const pill = document.querySelector('.pill');
+const body = document.querySelector("body")
+
+if(window.location.pathname === "/"){
+  body.style.backdropFilter = "blur(0px)"
+}
 
 function setActiveFromURL() {
   links.forEach((link) => {

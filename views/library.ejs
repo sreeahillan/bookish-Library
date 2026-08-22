@@ -30,16 +30,17 @@
         </form>
 
         <div class="slash"></div>
-
-        <p>Sort by :</p>
-        <form class="dropdown" action="/sorting" method="post">
-            <select class="filter" onchange="this.form.submit()" name="filter">
-                <option value="Title: A ➔ Z" <%= locals.selecteditem ? (selecteditem === "Title: A ➔ Z" ? "selected" : "") : "" %>>Title: A to Z </option>
-                <option value="Rating: Highest ➔ Lowest" <%= locals.selecteditem ? (selecteditem === "Rating: Highest ➔ Lowest" ? "selected" : "") : "" %>>Rating: High to Low </option>
-                <option value="Released: New ➔ Old" <%= locals.selecteditem ? (selecteditem === "Released: New ➔ Old" ? "selected" : "") : "" %>>Released: New to Old</option>
-            </select>
-            <span><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12.7071 14.7071C12.3166 15.0976 11.6834 15.0976 11.2929 14.7071L6.29289 9.70711C5.90237 9.31658 5.90237 8.68342 6.29289 8.29289C6.68342 7.90237 7.31658 7.90237 7.70711 8.29289L12 12.5858L16.2929 8.29289C16.6834 7.90237 17.3166 7.90237 17.7071 8.29289C18.0976 8.68342 18.0976 9.31658 17.7071 9.70711L12.7071 14.7071Z" fill="#000000"></path> </g></svg></span>
-        </form>
+        <div class="sort">
+            <p>Sort by :</p>
+            <form class="dropdown" action="/sorting" method="post">
+                <select class="filter" onchange="this.form.submit()" name="filter">
+                    <option value="Title: A ➔ Z" <%= locals.selecteditem ? (selecteditem === "Title: A ➔ Z" ? "selected" : "") : "" %>>Title: A to Z </option>
+                    <option value="Rating: Highest ➔ Lowest" <%= locals.selecteditem ? (selecteditem === "Rating: Highest ➔ Lowest" ? "selected" : "") : "" %>>Rating: High to Low </option>
+                    <option value="Released: New ➔ Old" <%= locals.selecteditem ? (selecteditem === "Released: New ➔ Old" ? "selected" : "") : "" %>>Released: New to Old</option>
+                </select>
+                <span><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12.7071 14.7071C12.3166 15.0976 11.6834 15.0976 11.2929 14.7071L6.29289 9.70711C5.90237 9.31658 5.90237 8.68342 6.29289 8.29289C6.68342 7.90237 7.31658 7.90237 7.70711 8.29289L12 12.5858L16.2929 8.29289C16.6834 7.90237 17.3166 7.90237 17.7071 8.29289C18.0976 8.68342 18.0976 9.31658 17.7071 9.70711L12.7071 14.7071Z" fill="#000000"></path> </g></svg></span>
+            </form>
+        </div>
     </div>
     <div class="books-container">
         <% for (let book of data) { %>
@@ -55,7 +56,6 @@
                         <h4><%= book.author %></h4>
                         <p><%= book.published_date %></p>
                         <% const find = personalData.find(obj => obj.book_id === book.id) %>
-                        <p>Tracker :</p>
                         <% if (find) { %>
                             <p>Rating :</p>
                             <div class="svg" data-item="<%= book.id %>">

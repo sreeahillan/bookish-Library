@@ -73,24 +73,19 @@ app.post('/add', async (req, res) => {
         error: 'Book not found !',
       });
     }
-    console.log(correctBook);
-    
-    const bookName = correctBook.volumeInfo.title || 'Missing Data';
-    const bookAuthor = correctBook.volumeInfo.authors[0] || 'Missing Data';
-    const bookPublishedYear = correctBook.volumeInfo.publishedDate || 'Missing Data';
-    const thumbnail = correctBook.volumeInfo.imageLinks.thumbnail || 'Missing Data';
+    const bookName = correctBook.volumeInfo?.title || 'Missing Data';
+    const bookAuthor = correctBook.volumeInfo.authors?.[0] || 'Missing Data';
+    const bookPublishedYear = correctBook.volumeInfo?.publishedDate || 'Missing Data';
+    const thumbnail = correctBook.volumeInfo.imageLinks?.thumbnail || 'Missing Data';
     const bookCategory = correctBook.volumeInfo.categories?.[0] || 'Missing Data';
-    const bookAccessInfo = correctBook.accessInfo.webReaderLink;
-    const snippet = correctBook.searchInfo.textSnippet || "No description"
+    const bookAccessInfo = correctBook.accessInfo?.webReaderLink? correctBook.accessInfo.webReaderLink : "Missing data";
+    const snippet = correctBook.searchInfo?.textSnippet ?  correctBook.searchInfo.textSnippet : "No description"
     try {
       const insert = await db.query(
         'INSERT INTO book (book_name , author , published_date , olid , category , accessinfo , snippet) VALUES ($1 , $2 , $3 , $4 , $5 , $6 , $7)  RETURNING *',
         [bookName, bookAuthor, bookPublishedYear, thumbnail, bookCategory, bookAccessInfo , snippet]
       );
-      console.log(insert.rows[0]);
     } catch (error) {
-      console.log(error);
-      
       const listOfBooks = await dataOfbookTable();
       const personalDetails = await dataOfPersonalTable();
       return res.render('library.ejs', {
@@ -101,7 +96,6 @@ app.post('/add', async (req, res) => {
     }
     res.redirect('/library');
   } catch (error) {
-    console.log(error);
     const listOfBooks = await dataOfbookTable();
     const personalDetails = await dataOfPersonalTable();
     return res.render('library.ejs', {
@@ -138,7 +132,6 @@ app.post('/personal', async (req, res) => {
       'INSERT INTO personal (book_id , progress , rating) VALUES ($1 , $2 , $3) RETURNING *',
       [book_id, bookProgress, bookRating]
     );
-    console.log(insert.rows[0]);
     res.redirect('/library');
   } else {
     const update = await db.query(
@@ -150,7 +143,6 @@ app.post('/personal', async (req, res) => {
 });
 
 app.post('/delete', async (req, res) => {
-  console.log(req.body);
   const personalId = req.body.personalId;
   const deleteId = req.body.DeleteId;
   if (personalId) {
@@ -165,8 +157,6 @@ app.post('/delete', async (req, res) => {
 
 app.post('/sorting', async (req, res) => {
   const filter = req.body.filter;
-  console.log(filter);
-
   if (filter === 'Title: A ➔ Z') {
     res.redirect('/library');
   } else if (filter === 'Rating: Highest ➔ Lowest') {
