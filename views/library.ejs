@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookish</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="icon" href="/images/logo_converted.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+</head>
+<body>
+    <%- include("partials/header.ejs") %>
+    <script src="/js/navbar.js"></script>
+    <script>
+        window.serverData = <%- JSON.stringify(personalData) %>;
+        window.serverData2 = <%- JSON.stringify(data) %>;
+    </script>
+
+    <div class="my-library">
+        <h1>My Library</h1>
+        <p>Discover, track, and manage your books in one place</p>
+    </div>
+
+    <div class="search-book">
+        <form class="search-book-form" action="/add" method="post">
+            <input class="input" type="text" placeholder="<%= locals.error ? error : " 🔍  Explore the Books" %>" name="bookName">
+            <button class="book-submit" type="submit">Search</button>
+        </form>
+
+        <div class="slash"></div>
+
+        <p>Sort by :</p>
+        <form class="dropdown" action="/sorting" method="post">
+            <select class="filter" onchange="this.form.submit()" name="filter">
+                <option value="Title: A ➔ Z" <%= locals.selecteditem ? (selecteditem === "Title: A ➔ Z" ? "selected" : "") : "" %>>Title: A to Z </option>
+                <option value="Rating: Highest ➔ Lowest" <%= locals.selecteditem ? (selecteditem === "Rating: Highest ➔ Lowest" ? "selected" : "") : "" %>>Rating: High to Low </option>
+                <option value="Released: New ➔ Old" <%= locals.selecteditem ? (selecteditem === "Released: New ➔ Old" ? "selected" : "") : "" %>>Released: New to Old</option>
+            </select>
+            <span><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12.7071 14.7071C12.3166 15.0976 11.6834 15.0976 11.2929 14.7071L6.29289 9.70711C5.90237 9.31658 5.90237 8.68342 6.29289 8.29289C6.68342 7.90237 7.31658 7.90237 7.70711 8.29289L12 12.5858L16.2929 8.29289C16.6834 7.90237 17.3166 7.90237 17.7071 8.29289C18.0976 8.68342 18.0976 9.31658 17.7071 9.70711L12.7071 14.7071Z" fill="#000000"></path> </g></svg></span>
+        </form>
+    </div>
+    <div class="books-container">
+        <% for (let book of data) { %>
+            <div class="card">
+            
+                    <form action="/book" method="post">
+                        <img class="book-image" onclick="this.closest('form').submit()" src="<%= book.olid %>" alt="book cover">
+                        <input name="selectedBook" type="hidden" value="<%= book.id %>">
+                    </form>
+    
+                    <div class="book-details">
+                        <h3><%= book.book_name %></h3>
+                        <h4><%= book.author %></h4>
+                        <p><%= book.published_date %></p>
+                        <% const find = personalData.find(obj => obj.book_id === book.id) %>
+                        <p>Tracker :</p>
+                        <% if (find) { %>
+                            <p>Rating :</p>
+                            <div class="svg" data-item="<%= book.id %>">
+                                <!-- prettier-ignore -->
+                                <svg id="1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="20" height="20" fill="none" stroke="gold" stroke-width="25">
+                                    <path d="M341.5 45.1C337.4 37.1 329.1 32 320.1 32C311.1 32 302.8 37.1 298.7 45.1L225.1 189.3L65.2 214.7C56.3 216.1 48.9 222.4 46.1 231C43.3 239.6 45.6 249 51.9 255.4L166.3 369.9L141.1 529.8C139.7 538.7 143.4 547.7 150.7 553C158 558.3 167.6 559.1 175.7 555L320.1 481.6L464.4 555C472.4 559.1 482.1 558.3 489.4 553C496.7 547.7 500.4 538.8 499 529.8L473.7 369.9L588.1 255.4C594.5 249 596.7 239.6 593.9 231C591.1 222.4 583.8 216.1 574.8 214.7L415 189.3L341.5 45.1z"/>
+                                </svg>
+                                <!-- prettier-ignore -->
+                                <svg id="2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="20" height="20" fill="none" stroke="gold" stroke-width="25">
+                                    <path d="M341.5 45.1C337.4 37.1 329.1 32 320.1 32C311.1 32 302.8 37.1 298.7 45.1L225.1 189.3L65.2 214.7C56.3 216.1 48.9 222.4 46.1 231C43.3 239.6 45.6 249 51.9 255.4L166.3 369.9L141.1 529.8C139.7 538.7 143.4 547.7 150.7 553C158 558.3 167.6 559.1 175.7 555L320.1 481.6L464.4 555C472.4 559.1 482.1 558.3 489.4 553C496.7 547.7 500.4 538.8 499 529.8L473.7 369.9L588.1 255.4C594.5 249 596.7 239.6 593.9 231C591.1 222.4 583.8 216.1 574.8 214.7L415 189.3L341.5 45.1z"/>
+                                </svg>
+                                <!-- prettier-ignore -->
+                                <svg id="3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="20" height="20" fill="none" stroke="gold" stroke-width="25">
+                                    <path d="M341.5 45.1C337.4 37.1 329.1 32 320.1 32C311.1 32 302.8 37.1 298.7 45.1L225.1 189.3L65.2 214.7C56.3 216.1 48.9 222.4 46.1 231C43.3 239.6 45.6 249 51.9 255.4L166.3 369.9L141.1 529.8C139.7 538.7 143.4 547.7 150.7 553C158 558.3 167.6 559.1 175.7 555L320.1 481.6L464.4 555C472.4 559.1 482.1 558.3 489.4 553C496.7 547.7 500.4 538.8 499 529.8L473.7 369.9L588.1 255.4C594.5 249 596.7 239.6 593.9 231C591.1 222.4 583.8 216.1 574.8 214.7L415 189.3L341.5 45.1z"/>
+                                </svg>
+                                <!-- prettier-ignore -->
+                                <svg id="4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="20" height="20" fill="none" stroke="gold" stroke-width="25">
+                                    <path d="M341.5 45.1C337.4 37.1 329.1 32 320.1 32C311.1 32 302.8 37.1 298.7 45.1L225.1 189.3L65.2 214.7C56.3 216.1 48.9 222.4 46.1 231C43.3 239.6 45.6 249 51.9 255.4L166.3 369.9L141.1 529.8C139.7 538.7 143.4 547.7 150.7 553C158 558.3 167.6 559.1 175.7 555L320.1 481.6L464.4 555C472.4 559.1 482.1 558.3 489.4 553C496.7 547.7 500.4 538.8 499 529.8L473.7 369.9L588.1 255.4C594.5 249 596.7 239.6 593.9 231C591.1 222.4 583.8 216.1 574.8 214.7L415 189.3L341.5 45.1z"/>
+                                </svg>
+                                <!-- prettier-ignore -->
+                                <svg id="5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="20" height="20" fill="none" stroke="gold" stroke-width="25">
+                                    <path d="M341.5 45.1C337.4 37.1 329.1 32 320.1 32C311.1 32 302.8 37.1 298.7 45.1L225.1 189.3L65.2 214.7C56.3 216.1 48.9 222.4 46.1 231C43.3 239.6 45.6 249 51.9 255.4L166.3 369.9L141.1 529.8C139.7 538.7 143.4 547.7 150.7 553C158 558.3 167.6 559.1 175.7 555L320.1 481.6L464.4 555C472.4 559.1 482.1 558.3 489.4 553C496.7 547.7 500.4 538.8 499 529.8L473.7 369.9L588.1 255.4C594.5 249 596.7 239.6 593.9 231C591.1 222.4 583.8 216.1 574.8 214.7L415 189.3L341.5 45.1z"/>
+                                </svg>
+                            </div>
+                            <p>Progress :</p>
+                            <p><%= find.progress %></p>
+                        <% } else { %>
+                            <p>Rating :</p>
+                            <div class="svg" >
+                                <svg id="1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="20" height="20" fill="none" stroke="gold" stroke-width="25">
+                                    <path d="M341.5 45.1C337.4 37.1 329.1 32 320.1 32C311.1 32 302.8 37.1 298.7 45.1L225.1 189.3L65.2 214.7C56.3 216.1 48.9 222.4 46.1 231C43.3 239.6 45.6 249 51.9 255.4L166.3 369.9L141.1 529.8C139.7 538.7 143.4 547.7 150.7 553C158 558.3 167.6 559.1 175.7 555L320.1 481.6L464.4 555C472.4 559.1 482.1 558.3 489.4 553C496.7 547.7 500.4 538.8 499 529.8L473.7 369.9L588.1 255.4C594.5 249 596.7 239.6 593.9 231C591.1 222.4 583.8 216.1 574.8 214.7L415 189.3L341.5 45.1z"/>
+                                </svg>
+                                <!-- prettier-ignore -->
+                                <svg id="2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="20" height="20" fill="none" stroke="gold" stroke-width="25">
+                                    <path d="M341.5 45.1C337.4 37.1 329.1 32 320.1 32C311.1 32 302.8 37.1 298.7 45.1L225.1 189.3L65.2 214.7C56.3 216.1 48.9 222.4 46.1 231C43.3 239.6 45.6 249 51.9 255.4L166.3 369.9L141.1 529.8C139.7 538.7 143.4 547.7 150.7 553C158 558.3 167.6 559.1 175.7 555L320.1 481.6L464.4 555C472.4 559.1 482.1 558.3 489.4 553C496.7 547.7 500.4 538.8 499 529.8L473.7 369.9L588.1 255.4C594.5 249 596.7 239.6 593.9 231C591.1 222.4 583.8 216.1 574.8 214.7L415 189.3L341.5 45.1z"/>
+                                </svg>
+                                <!-- prettier-ignore -->
+                                <svg id="3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="20" height="20" fill="none" stroke="gold" stroke-width="25">
+                                    <path d="M341.5 45.1C337.4 37.1 329.1 32 320.1 32C311.1 32 302.8 37.1 298.7 45.1L225.1 189.3L65.2 214.7C56.3 216.1 48.9 222.4 46.1 231C43.3 239.6 45.6 249 51.9 255.4L166.3 369.9L141.1 529.8C139.7 538.7 143.4 547.7 150.7 553C158 558.3 167.6 559.1 175.7 555L320.1 481.6L464.4 555C472.4 559.1 482.1 558.3 489.4 553C496.7 547.7 500.4 538.8 499 529.8L473.7 369.9L588.1 255.4C594.5 249 596.7 239.6 593.9 231C591.1 222.4 583.8 216.1 574.8 214.7L415 189.3L341.5 45.1z"/>
+                                </svg>
+                                <!-- prettier-ignore -->
+                                <svg id="4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="20" height="20" fill="none" stroke="gold" stroke-width="25">
+                                    <path d="M341.5 45.1C337.4 37.1 329.1 32 320.1 32C311.1 32 302.8 37.1 298.7 45.1L225.1 189.3L65.2 214.7C56.3 216.1 48.9 222.4 46.1 231C43.3 239.6 45.6 249 51.9 255.4L166.3 369.9L141.1 529.8C139.7 538.7 143.4 547.7 150.7 553C158 558.3 167.6 559.1 175.7 555L320.1 481.6L464.4 555C472.4 559.1 482.1 558.3 489.4 553C496.7 547.7 500.4 538.8 499 529.8L473.7 369.9L588.1 255.4C594.5 249 596.7 239.6 593.9 231C591.1 222.4 583.8 216.1 574.8 214.7L415 189.3L341.5 45.1z"/>
+                                </svg>
+                                <!-- prettier-ignore -->
+                                <svg id="5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="20" height="20" fill="none" stroke="gold" stroke-width="25">
+                                    <path d="M341.5 45.1C337.4 37.1 329.1 32 320.1 32C311.1 32 302.8 37.1 298.7 45.1L225.1 189.3L65.2 214.7C56.3 216.1 48.9 222.4 46.1 231C43.3 239.6 45.6 249 51.9 255.4L166.3 369.9L141.1 529.8C139.7 538.7 143.4 547.7 150.7 553C158 558.3 167.6 559.1 175.7 555L320.1 481.6L464.4 555C472.4 559.1 482.1 558.3 489.4 553C496.7 547.7 500.4 538.8 499 529.8L473.7 369.9L588.1 255.4C594.5 249 596.7 239.6 593.9 231C591.1 222.4 583.8 216.1 574.8 214.7L415 189.3L341.5 45.1z"/>
+                                </svg>
+                            </div>
+                            <p>Progress :</p>
+                            <p>No progress yet</p>
+                        <% } %>
+                    </div>
+                        <div class="navigation">
+                            <form action="/book" method="post">
+                                <button class="view" type="submit">View</button>
+                                <input name="selectedBook" type="hidden" value="<%= book.id %>">
+                            </form>
+                            <form  action="/delete" method="post">
+                                <input name="DeleteId" type="hidden" value="<%= book.id %>">
+                                <input name="personalId" type="hidden" value="<%= find?.book_id ? find.book_id : '' %>">
+                                <button class="delete" type="submit">Delete</button>
+                            </form>
+                    
+                    </div>
+                
+            </div>
+        <% } %>
+    </div>
+</body>
+<script src="/js/library.js"></script>
+</html>

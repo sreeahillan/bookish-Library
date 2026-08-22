@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bookish</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="icon" href="/images/logo_converted.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <%- include("partials/header.ejs") %>
+    <script src="/js/navbar.js"></script>
+    <div class="hero">
+      <div>
+        <h1 class="hero-title">
+          Discover, read, and collect <br />
+          <span>Your books, your library</span>
+        </h1>
+      </div>
+      <p class="hero-para">Organize your collection and keep every story close</p>
+      <form action="/library" method="get">
+        <button class="library-button" type="submit">Go to your library</button>
+      </form>
+    </div>
+    <!-- <div class="hand">
+      <img src="/images/thought-catalog-o0Qqw21-0NI-unsplash-removebg-preview.png" alt="">
+    </div> -->
+  </body>
+</html>
