@@ -474,6 +474,7 @@ option{
     grid-template-rows: 1fr 1fr;
   }
   .details-div{
+    text-align: center;
     align-items: center;
     justify-content: space-between;
   }
